@@ -13,6 +13,7 @@ const testprice = require('./routes/api/testpriceapi.js')
 const getprice = require('./routes/api/getprice.js');
 const liverevenue = require('./routes/api/liverevenue');
 const historic = require('./routes/api/historic');
+const path = require('path');
 //const PriceModelClass = require('./services/PriceModelClass.js');
 //const PriceModelSchema = require('./models/LivePriceModel');
 
@@ -26,7 +27,7 @@ const db = require('./config/keys').mongoURI;
 
 // Connect to Mongo
 mongoose
-    .connect(db)
+    .connect(process.env.MONGODB_URI || db)
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err));
 
@@ -37,6 +38,14 @@ app.use('/api/testprice', testprice);
 app.use('/api/getprice', getprice);
 app.use('/api/liverevenue', liverevenue);
 app.use('/api/historic', historic);
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static( 'client/build'));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html')); //relative path
+    });
+}
 
 /* Decl of server port */
 const port = process.env.PORT || 5000;
