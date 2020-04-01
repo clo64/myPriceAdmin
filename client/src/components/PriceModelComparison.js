@@ -143,7 +143,7 @@ export default class PriceModelComparison extends Component {
       let year = this.appendLeadingZeros(dateObj.getFullYear());
       let d = year + "-" + month + "-" + day;
       console.log(d);
-      axios.post('http://localhost:5000/api/historic', {date: d}).then(historicmodel => 
+      axios.post('https://pricing-admin2.herokuapp.com/api/historic', {date: d}).then(historicmodel => 
           this.setState({
             base_rate: historicmodel.data[0].base_rate,
             base_rate_mult: historicmodel.data[0].base_rate_mult,

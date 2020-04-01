@@ -88,7 +88,7 @@ export default class ViewCurrent extends Component {
         let updateArray = {base_rate: this.state.new_base_rate, base_rate_mult: this.state.new_base_rate_mult,
                             min_thresh: this.state.new_min_thresh, max_thresh: this.state.new_max_thresh};
         //alert(JSON.stringify(updateArray, null, '  '));
-        axios.post('http://localhost:5000/api/liveprice', updateArray).then(function(response){ 
+        axios.post('https://pricing-admin2.herokuapp.com/api/liveprice', updateArray).then(function(response){ 
             alert(JSON.stringify(response, null, '  '));
         })
        // 
@@ -98,7 +98,7 @@ export default class ViewCurrent extends Component {
     * model data from mongoDB
     */
       componentDidMount(){
-          axios.get('http://localhost:5000/api/liverevenue').then(livePriceModel => this.setState({
+          axios.get('https://pricing-admin2.herokuapp.com/api/liverevenue').then(livePriceModel => this.setState({
             base_rate: livePriceModel.data[0].base_rate,
             base_rate_mult: livePriceModel.data[0].base_rate_mult,
             min_thresh: livePriceModel.data[0].min_thresh,
