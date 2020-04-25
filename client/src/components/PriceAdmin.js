@@ -20,7 +20,7 @@ export default class PriceAdmin extends Component {
           </Row>
           <Row>
                 <Col>
-                <Button href="/createNew" color="primary" size="lg" block>Edit weights</Button>                    
+                <Button href="/editWeights" color="primary" size="lg" block>Edit weights</Button>                    
                 </Col>
           </Row>
           <Row>

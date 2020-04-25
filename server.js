@@ -14,12 +14,11 @@ const getprice = require('./routes/api/getprice.js');
 const liverevenue = require('./routes/api/liverevenue');
 const historic = require('./routes/api/historic');
 const path = require('path');
-var cors = require('cors');
 //const PriceModelClass = require('./services/PriceModelClass.js');
 //const PriceModelSchema = require('./models/LivePriceModel');
 
 const app = express();
-app.use(cors());
+
 
 // Bodyparser Middleware
 app.use(bodyParser.json());
@@ -41,9 +40,10 @@ app.use('/api/getprice', getprice);
 app.use('/api/liverevenue', liverevenue);
 app.use('/api/historic', historic);
 
+//Used for deployement to Heroku
+//Directs frontend to React
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static( 'client/build'));
-
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html')); //relative path
     });
@@ -54,9 +54,11 @@ const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
 
+
+//**********************************************************
 /* Old code used for testing purposes moved below this line.
 *  Don't delete in the event it is needed for reference.
-*  Remove before final release
+*  Will remove before final release
 */
 
 //Database Test

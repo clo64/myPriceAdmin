@@ -4,6 +4,7 @@
 * for the system.
 */
 import React, { Component } from 'react';
+import DatePicker from "react-datepicker";
 import axios from 'axios';
 import { Line } from "react-chartjs-2";
 import { MDBContainer } from "mdbreact";
@@ -15,8 +16,12 @@ export default class ViewCurrent extends Component {
     constructor(){
     super();
     this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.handleDateChangeStart = this.handleDateChangeStart.bind(this);
+    this.handleDateChangeEnd = this.handleDateChangeEnd.bind(this);
     //Establish essential sub variables of state.
     this.state = {
+        rangeStartDate: new Date(),
+        rangeEndDate: new Date(),
         base_rate: "Try refreshing",
         base_rate_mult: "Try refreshing",
         min_thresh: "Try refreshing",
@@ -88,17 +93,27 @@ export default class ViewCurrent extends Component {
         let updateArray = {base_rate: this.state.new_base_rate, base_rate_mult: this.state.new_base_rate_mult,
                             min_thresh: this.state.new_min_thresh, max_thresh: this.state.new_max_thresh};
         //alert(JSON.stringify(updateArray, null, '  '));
-        axios.post('https://pricing-admin2.herokuapp.com/api/liveprice', updateArray).then(function(response){ 
+        axios.post('http://localhost:5000/api/liveprice', updateArray).then(function(response){ 
             alert(JSON.stringify(response, null, '  '));
         })
        // 
+    }
+    handleDateChangeStart(dateObj){
+      this.setState({
+        rangeStartDate: dateObj
+      });
+    }
+    handleDateChangeEnd(dateObj){
+      this.setState({
+        rangeEndDate: dateObj
+      });
     }
     /*
     * Initial state of graph on mount. Sends request to get current
     * model data from mongoDB
     */
       componentDidMount(){
-          axios.get('https://pricing-admin2.herokuapp.com/api/liverevenue').then(livePriceModel => this.setState({
+          axios.get('http://localhost:5000/api/liverevenue').then(livePriceModel => this.setState({
             base_rate: livePriceModel.data[0].base_rate,
             base_rate_mult: livePriceModel.data[0].base_rate_mult,
             min_thresh: livePriceModel.data[0].min_thresh,
@@ -179,6 +194,7 @@ export default class ViewCurrent extends Component {
         </Row>
         <Row>
             <Col>
+            <h6>Y axis represents dollars, X axis represents hours of the day in 24-hr format.</h6>
             <h5>Revenue based on admin defined values: ${this.state.total_projected_revenue}</h5>
             </Col>
         </Row>
@@ -232,6 +248,7 @@ export default class ViewCurrent extends Component {
             />
         </InputGroup>
         </Col>
+        
         </Row>
         <Row>
             <p></p>
@@ -245,8 +262,7 @@ export default class ViewCurrent extends Component {
             <Input 
             type = "text"
             name = "text"
-            placeholder = "Base Rate Multiplier" 
-            
+            placeholder = "Base Rate Multiplier"  
             onChange = {e => this.setState({new_base_rate_mult: e.target.value})}/>
         </InputGroup>
         </Col>
@@ -291,6 +307,25 @@ export default class ViewCurrent extends Component {
         </Row>
         <Row>
             <p></p>
+        </Row>
+        <Col>
+        <Row>
+          <DatePicker selected={this.state.rangeStartDate}
+                      onChange={this.handleDateChangeStart}/>&nbsp;{" "}Start Date
+       
+        </Row>
+        </Col>
+        <Row>
+          <p></p>
+        </Row>
+        <Col>
+        <Row>
+          <DatePicker selected={this.state.rangeEndDate}
+                      onChange={this.handleDateChangeEnd}/>&nbsp;{" "}End Date
+        </Row>
+        </Col>
+        <Row>
+          <p></p>
         </Row>
         <Col>
         <Row>

@@ -11,7 +11,7 @@ import Graph from './components/Graph'
 import Button from './components/button';
 import PriceAdmin from './components/PriceAdmin';
 import ViewCurrent from './components/ViewCurrent';
-import CreateNew from './components/CreateNew';
+import EditWeights from './components/EditWeights';
 import PriceModelComparison from './components/PriceModelComparison';
 
 
@@ -24,7 +24,7 @@ function App() {
       <br/>
       <Route path = "/" exact component={PriceAdmin} />
       <Route path = "/viewCurrent" component = {ViewCurrent} />
-      <Route path = "/createNew" component = {CreateNew} />
+      <Route path = "/editWeights" component = {EditWeights} />
       <Route path = "/priceModelComparison" component = {PriceModelComparison} />
     </div>
     </Router>
